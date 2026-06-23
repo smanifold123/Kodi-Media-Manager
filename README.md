@@ -77,6 +77,7 @@ Scanning is **manual** — click *Scan sources* on the Movies or TV tab when you
 - **Existing NFO = done.** If an item already has an NFO (e.g. migrated from tinyMediaManager), it's parsed, imported, marked done, and never re-scraped or overwritten unless you explicitly re-match it.
 - **No NFO = New.** Items without metadata are flagged **New** (an orange badge) and wait for scraping.
 - Scanning is **idempotent** and incremental — re-scanning only picks up what's changed. For TV, a re-scan also finds **new episode files** added to shows you already have (handy for weekly releases).
+- **Deletions are reconciled.** If you delete a movie folder or a show folder from a source, the next scan of that source removes it from the library (a removed show takes its episodes with it). This only happens for a source that read cleanly — an offline or unreachable network share never removes anything — and it only ever deletes **library entries**, never your files. The scan summary reports how many were removed.
 - Junk is skipped: partial downloads, `sample.*` files, and anything outside the video extension whitelist (`.mkv .mp4 .avi .m4v .mov .wmv .ts`).
 - Any files it can't make sense of are listed in a **scan-errors** dialog, grouped so you can tell real problems (unreadable filenames) from harmless noise (scene-release `.nfo` text files, which just become New and get fixed on the next scrape).
 
@@ -218,4 +219,4 @@ The app is not code-signed, so Windows SmartScreen may warn the first time you r
 
 **My artwork shows a B badge but no poster.** That B is an existing banner the app preserved. Posters/fanart are the P/F badges. The app writes `poster.jpg`/`fanart.jpg`; if those are missing, scrape or re-scrape the item.
 
-**"Use IMDb ID" says the title isn't on TMDB.** The IMDb ID only resolves when TMDB knows it. If TMDB has no record of the title at all (common for very niche documentaries), it can't be matched — imdb.com itself can't be read (it's bot-protected), so the app tells you to use **Edit fields...** to type the metadata in by hand. That writes a valid NFO (without artwork).
+**Kodi shows no poster/plot for a scraped item, but the app shows it fine.** Versions before 2.4.1 wrote one slightly malformed attribute in the NFO that Kodi's parser rejected (the app's own reader tolerated it, so it looked correct in the app). Update to 2.4.1+, then **Force re-scrape** the affected items (or **Re-scrape all** for the source in Settings) to rewrite the NFOs, and refresh them in Kodi. tinyMediaManager-imported items were never affected.
