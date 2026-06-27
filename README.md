@@ -170,13 +170,15 @@ TV\
 
 Movies never get a `<set>`/collection tag written — collection grouping is intentionally not used.
 
+The NFOs also carry the poster and fanart as `<thumb aspect="poster">`/`<fanart>` tags (TV adds per-season poster tags), pointing at the TMDB image — the same way tinyMediaManager does. This is what makes the poster show in Kodi and the mobile apps; the local `.jpg` files are written too, for portability and other tools.
+
 ---
 
 ## Pointing Kodi at your library
 
 1. In Kodi, add your media sources as usual.
 2. Set the content scraper for those sources to **"Local information only"** (Movies and TV Shows both have this option).
-3. Refresh the library. Kodi reads the NFO files and `poster.jpg`/`fanart.jpg` the app wrote, with no internet lookups.
+3. Refresh the library. Kodi reads the metadata and artwork from the NFO files the app wrote. The poster/fanart tags point at the TMDB image, so Kodi caches the artwork over the internet on first read (the same as a tinyMediaManager library); the local `poster.jpg`/`fanart.jpg` files are there as a fallback.
 
 ---
 
@@ -219,4 +221,4 @@ The app is not code-signed, so Windows SmartScreen may warn the first time you r
 
 **My artwork shows a B badge but no poster.** That B is an existing banner the app preserved. Posters/fanart are the P/F badges. The app writes `poster.jpg`/`fanart.jpg`; if those are missing, scrape or re-scrape the item.
 
-**Kodi shows no poster/plot for a scraped item, but the app shows it fine.** Versions before 2.4.1 wrote one slightly malformed attribute in the NFO that Kodi's parser rejected (the app's own reader tolerated it, so it looked correct in the app). Update to 2.4.1+, then **Force re-scrape** the affected items (or **Re-scrape all** for the source in Settings) to rewrite the NFOs, and refresh them in Kodi. tinyMediaManager-imported items were never affected.
+**Kodi shows no poster (or no plot) for a scraped item, but the app shows it fine.** Two fixes landed here: 2.4.1 corrected a malformed NFO attribute that made Kodi reject the file (no plot), and 2.4.2 added the `<thumb>`/`<fanart>` art tags Kodi needs to display the poster. Update to 2.4.2+, **Force re-scrape** the affected items (or **Re-scrape all** for the source in Settings) to rewrite the NFOs, then refresh them in Kodi. tinyMediaManager-imported items were never affected.

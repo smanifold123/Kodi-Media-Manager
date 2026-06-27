@@ -2,31 +2,36 @@
 
 Newest release at the top.
 
-## 2.4.1 — 2026-06-15
+## 2.4.2 — 2026-06-24
+
+- **Fixed: posters now show in Kodi for scraped items.** The app was only dropping `poster.jpg`/`fanart.jpg` files next to the video and writing no artwork references inside the NFO. Kodi (and the mobile apps that read its library) takes movie/show poster and fanart from the NFO's `<thumb>`/`<fanart>` tags — the same way tinyMediaManager writes them — so kmm-scraped items had metadata but no poster, while tmm-imported items showed posters fine. The app now writes `<thumb aspect="poster">`, `<fanart>`, and per-season poster tags into the NFO (pointing at the TMDB image, exactly like tmm), in addition to the local `.jpg` files. Editing an item preserves its existing artwork tags.
+  - **Action needed for already-scraped items:** as with 2.4.1, items written by an earlier version need their NFO rewritten — **Force re-scrape** them (or **Re-scrape all** for the source in Settings), then refresh in Kodi. tinyMediaManager-imported items were never affected.
+
+## 2.4.1 — 2026-06-24
 
 - **Fixed: NFOs written by the app were invalid XML, so Kodi couldn't read them.** The `default` attribute on the `<rating>` and `<uniqueid>` tags was being written bare (`default`) instead of `default="true"`. A bare, value-less attribute is not valid XML, and Kodi's strict parser rejects the whole file — which is why freshly-scraped or edited items showed no plot and no poster in Kodi even though the app displayed them correctly. (The app's own reader is lenient, so it never noticed.) All NFOs the app writes from now on are valid.
   - **Action needed for already-scraped items:** items written by an earlier version still have the bad NFO on disk. To fix them, **Force re-scrape** the affected items (right-click → Force re-scrape), or use **Re-scrape all** for a source in Settings, which rewrites every item that has a stored TMDB id. Then refresh those items in Kodi (or remove and re-add the source) so it re-reads the corrected files. Items imported from tinyMediaManager were never affected.
 
-## 2.4.0 — 2026-06-15
+## 2.4.0 — 2026-06-24
 
 - **Scanning now removes items deleted from your sources.** Previously a scan only ever *added* — if you deleted a movie folder or a show folder from disk, its entry lingered in the library forever (and could show as a duplicate). Now **Scan movie sources** drops movies whose folder is gone, and the TV scan drops shows whose folder is gone (along with their episodes). The scan summary reports how many were removed.
 - **Safe by design.** A source is only reconciled if it read cleanly this scan, and an item is only dropped once its folder is confirmed absent on disk — so an offline or unreachable network share never removes anything. This only ever deletes **library entries**, never your actual files. (Episode-level cleanup within a single show already shipped in 2.3.0; this extends the same idea to whole movies/shows on a full source scan.)
 
-## 2.3.3 — 2026-06-15
+## 2.3.3 — 2026-06-24
 
 - **Stopped attempting the dead imdb.com fallback.** Repeated testing confirmed imdb.com always serves an AWS WAF anti-bot page to the app, so the IMDb-direct text scrape could never succeed — it only produced a confusing error and a leftover dump file in your Temp folder. Now, when **Use IMDb ID** is used for a title TMDB has no record of, the app stops immediately with a plain message — *"…isn't on TMDB. imdb.com can't be read (bot-protected)… use Edit fields… to enter the metadata by hand"* — and writes nothing. No fetch attempt, no Temp dump. The IMDb ID match still works fully whenever TMDB knows the ID (including a documentary/special TMDB files as a movie); only the doomed last-resort branch was removed.
 
-## 2.3.2 — 2026-06-15
+## 2.3.2 — 2026-06-24
 
 Documentation.
 
 - **README brought up to date with v2.** The "Known limitations" section no longer lists things that now exist: multi-episode files are recognised, file renaming is supported, and IMDb-ID matching works through TMDB. It now accurately describes IMDb as an ID lookup resolved via TMDB (with the imdb.com-direct path blocked by AWS WAF), notes that editing is movie/show level only, and documents stacked multi-episode NFOs and the rename action. Added an FAQ entry for the "IMDb lookup failed (AWS WAF)" message. No app changes.
 
-## 2.3.1 — 2026-06-14
+## 2.3.1 — 2026-06-24
 
 - **Honest IMDb-ID help text.** Confirmed again on a second title (tt1260997): imdb.com serves an AWS WAF anti-bot challenge to the app, so the direct imdb.com text scrape can't work — it's only ever reachable for titles TMDB has no record of at all, and for those it's blocked. The IMDb ID field's hint now says this plainly and points to **Edit fields…** as the way to enter metadata by hand for a title no provider has. The IMDb ID match itself still works whenever TMDB knows the ID (including a documentary/special whose ID TMDB lists as a movie).
 
-## 2.3.0 — 2026-06-14
+## 2.3.0 — 2026-06-24
 
 Final slice of SPEC-v2: **rename & cleanup (F2)**. This completes v2.
 
