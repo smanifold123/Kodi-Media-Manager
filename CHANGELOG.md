@@ -2,6 +2,12 @@
 
 Newest release at the top.
 
+## 2.5.0 — 2026-06-24
+
+- **New: cast and trailer in the NFO.** Scraped movies and shows now include the cast (`<actor>` blocks — name, role, billing order, and each actor's photo from TMDB) and a trailer link (`<trailer>` pointing at the best official YouTube trailer, in the form Kodi plays). This is what makes the **Cast** list and **Trailer** button appear in the Kodi remote apps, matching what a tinyMediaManager NFO provides. Cast is capped at the top 30 by billing. Editing an item preserves its cast and trailer. (This goes a little beyond the original "no trailers/cast" scope — added on request.)
+  - Cast photos are referenced by their TMDB URL (no extra image files are downloaded), and trailers/cast are written for movies and shows but not individual episodes.
+  - **Action needed for existing items:** as with the recent NFO fixes, **Force re-scrape** (or **Re-scrape all** for a source) to add cast/trailer to items scraped by an earlier version, then refresh in Kodi.
+
 ## 2.4.2 — 2026-06-24
 
 - **Fixed: posters now show in Kodi for scraped items.** The app was only dropping `poster.jpg`/`fanart.jpg` files next to the video and writing no artwork references inside the NFO. Kodi (and the mobile apps that read its library) takes movie/show poster and fanart from the NFO's `<thumb>`/`<fanart>` tags — the same way tinyMediaManager writes them — so kmm-scraped items had metadata but no poster, while tmm-imported items showed posters fine. The app now writes `<thumb aspect="poster">`, `<fanart>`, and per-season poster tags into the NFO (pointing at the TMDB image, exactly like tmm), in addition to the local `.jpg` files. Editing an item preserves its existing artwork tags.

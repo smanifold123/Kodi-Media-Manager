@@ -170,7 +170,7 @@ TV\
 
 Movies never get a `<set>`/collection tag written — collection grouping is intentionally not used.
 
-The NFOs also carry the poster and fanart as `<thumb aspect="poster">`/`<fanart>` tags (TV adds per-season poster tags), pointing at the TMDB image — the same way tinyMediaManager does. This is what makes the poster show in Kodi and the mobile apps; the local `.jpg` files are written too, for portability and other tools.
+The NFOs also carry the poster and fanart as `<thumb aspect="poster">`/`<fanart>` tags (TV adds per-season poster tags), pointing at the TMDB image — the same way tinyMediaManager does. This is what makes the poster show in Kodi and the mobile apps; the local `.jpg` files are written too, for portability and other tools. The cast (`<actor>` with each actor's TMDB photo) and a YouTube `<trailer>` link are written as well, so the Kodi remote apps show the Cast list and a Trailer button.
 
 ---
 
@@ -187,7 +187,8 @@ The NFOs also carry the poster and fanart as `<thumb aspect="poster">`/`<fanart>
 - **TMDB is the scraper.** IMDb is supported only as an **ID lookup through TMDB** (enter a `tt#######` and TMDB resolves it, including titles TMDB files as movies). imdb.com is never read directly — its pages are bot-protected (AWS WAF) and there's no free IMDb API wired in — so a title TMDB has no record of must be filled in with **Edit fields...**. TheTVDB and other providers aren't used.
 - **Episode groups** (e.g. the 5-season Netflix cut of Money Heist that only exists as a TMDB "episode group") are not queried. Use the season-offset re-match instead.
 - **Editing is movie/show level only** — there's no per-episode metadata editing.
-- No codec/quality detection, no subtitles/trailers/cast images/episode thumbnails, no scheduled/automatic scanning, and no movie sets/collections.
+- Cast and a YouTube trailer link **are** written to the NFO now (so the Kodi remote shows them), but no cast-image **files** are downloaded (they're referenced by TMDB URL), and there's no per-episode cast/trailer.
+- No codec/quality detection, no subtitles, no episode thumbnails, no scheduled/automatic scanning, and no movie sets/collections.
 
 Renaming files to the naming convention and recognising multi-episode files (e.g. `S01E01E02`) **are** supported — see *Fixing wrong or missing matches* and *How scraping works* above.
 
