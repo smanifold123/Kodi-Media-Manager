@@ -1,8 +1,3 @@
----
-layout: default
-title: Kodi Media Manager
----
-
 # Kodi Media Manager
 
 A lightweight tool for managing and maintaining Kodi media libraries.
